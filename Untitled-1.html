@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>SMART-MBG</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:'Segoe UI',sans-serif;
+  background:linear-gradient(160deg,#0f9d58,#86efac);
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  overflow:hidden;
+}
+
+/* ===== EMOJI BACKGROUND ===== */
+.decor{
+  position:fixed;
+  font-size:28px;
+  opacity:.25;
+  animation:float 6s ease-in-out infinite;
+}
+@keyframes float{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-15px)}
+}
+.left{left:10px}
+.right{right:10px}
+.top{top:20px}
+.mid{top:45%}
+.bot{bottom:20px}
+
+/* ===== APP ===== */
+.app{
+  width:400px;
+  background:#f8fff9;
+  border-radius:30px;
+  box-shadow:0 25px 60px rgba(0,0,0,.25);
+  overflow:hidden;
+}
+
+.screen{
+  display:none;
+  animation:fade .4s ease;
+}
+@keyframes fade{
+  from{opacity:0;transform:translateY(15px)}
+  to{opacity:1;transform:translateY(0)}
+}
+.screen.active{display:block}
+
+/* ===== HEADER ===== */
+.header{
+  background:linear-gradient(135deg,#16a34a,#22c55e);
+  color:white;
+  padding:20px;
+  text-align:center;
+}
+
+.avatar{
+  width:70px;height:70px;
+  background:#dcfce7;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:34px;
+  margin:0 auto 6px;
+}
+
+/* ===== CONTENT ===== */
+.content{padding:20px}
+
+.card{
+  background:white;
+  border-radius:20px;
+  padding:18px;
+  margin-bottom:16px;
+  box-shadow:0 10px 25px rgba(0,0,0,.08);
+}
+
+input,select{
+  width:100%;
+  padding:12px;
+  margin-top:10px;
+  border-radius:14px;
+  border:1px solid #ccc;
+}
+
+button{
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:18px;
+  background:#22c55e;
+  color:white;
+  margin-top:14px;
+  font-size:15px;
+}
+
+/* ===== MENU ANIMATED ===== */
+.menu{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+.menu .item{
+  background:#e8f9f0;
+  padding:18px;
+  border-radius:18px;
+  text-align:center;
+  cursor:pointer;
+  font-size:14px;
+  transition:.25s;
+  animation:pulse 3s infinite;
+}
+@keyframes pulse{
+  0%,100%{transform:scale(1)}
+  50%{transform:scale(1.03)}
+}
+.menu .item:hover{
+  transform:translateY(-6px) scale(1.05);
+  box-shadow:0 15px 25px rgba(0,0,0,.15);
+}
+
+/* ===== LEADERBOARD ===== */
+.rank{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:14px;
+  border-radius:16px;
+  margin-bottom:10px;
+  background:#ecfdf5;
+}
+.rank.top1{background:linear-gradient(135deg,#facc15,#fde047)}
+.rank.top2{background:#e5e7eb}
+.rank.top3{background:#fde68a}
+</style>
+</head>
+
+<body>
+
+<!-- EMOJI BACKGROUND -->
+<div class="decor left top">🍚🥦🌿</div>
+<div class="decor left mid">🍎🌱🥕</div>
+<div class="decor left bot">🌾🥬🍌</div>
+<div class="decor right top">🥗🌳🍉</div>
+<div class="decor right mid">🍊🌿🥒</div>
+<div class="decor right bot">🌱🍚🥕</div>
+
+<div class="app">
+
+<!-- BIODATA -->
+<div class="screen active" id="biodata">
+  <div class="header">
+    <h2>SMART-MBG 🌱</h2>
+    <p>Biodata Siswa</p>
+  </div>
+  <div class="content">
+    <div class="card">
+      <input id="nama" placeholder="Nama Lengkap">
+      <input id="kelas" placeholder="Kelas">
+      <input id="Nis" placehholder="Nama induk Siswa">
+      <input id="Sekolah" placeholder="Asal Sekolah">
+      <button onclick="masuk()">Masuk 🚀</button>
+    </div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="screen" id="dash">
+  <div class="header">
+    <div class="avatar">👤</div>
+    <h3 id="outNama"></h3>
+    ⭐ Poin: <b id="poin">0</b>
+  </div>
+  <div class="content">
+    <div class="menu">
+      <div class="item" onclick="go('scan')">📸 Scan MBG</div>
+      <div class="item" onclick="go('limbah')">♻ Olah Limbah</div>
+      <div class="item" onclick="go('leader')">🏆 Leaderboard</div>
+      <div class="item" onclick="alert('AI sedang dikembangkan 🤖')">🤖 AI MBG</div>
+    </div>
+  </div>
+</div>
+
+<!-- SCAN -->
+<div class="screen" id="scan">
+  <div class="header"><h2>📸 Scan MBG</h2></div>
+  <div class="content">
+    <div class="card">
+      <select>
+        <option>Makanan Habis</option>
+        <option>Tidak Habis</option>
+      </select>
+      <button onclick="tambahPoin(20)">Kirim</button>
+      <button onclick="go('dash')">Kembali</button>
+    </div>
+  </div>
+</div>
+
+<!-- LIMBAH -->
+<div class="screen" id="limbah">
+  <div class="header"><h2>♻ Olah Limbah</h2></div>
+  <div class="content">
+    <div class="card">
+      <select>
+        <option>Kompos</option>
+        <option>Eco-enzyme</option>
+        <option>Pakan ternak</option>
+      </select>
+      <button onclick="tambahPoin(10)">Upload</button>
+      <button onclick="go('dash')">Kembali</button>
+    </div>
+  </div>
+</div>
+
+<!-- LEADERBOARD -->
+<div class="screen" id="leader">
+  <div class="header"><h2>🏆 Leaderboard</h2></div>
+  <div class="content" id="leaderList"></div>
+  <button onclick="go('dash')">Kembali</button>
+</div>
+
+</div>
+
+<script>
+let poin=0;
+let siswa=[
+  {nama:"Andi",poin:120},
+  {nama:"Budi",poin:95},
+  {nama:"Citra",poin:80},
+  {nama:"Kamu",poin:0}
+];
+
+function go(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if(id==="leader")renderLeaderboard();
+}
+
+function masuk(){
+  siswa[3].nama=nama.value;
+  outNama.innerText=nama.value+" | "+kelas.value;
+  go('dash');
+}
+
+function tambahPoin(x){
+  poin+=x;
+  document.getElementById("poin").innerText=poin;
+  siswa[3].poin=poin;
+  go('dash');
+}
+
+function renderLeaderboard(){
+  siswa.sort((a,b)=>b.poin-a.poin);
+  leaderList.innerHTML="";
+  siswa.forEach((s,i)=>{
+    let cls=i==0?"top1":i==1?"top2":i==2?"top3":"";
+    let medal=i==0?"🥇":i==1?"🥈":i==2?"🥉":i+1;
+    leaderList.innerHTML+=`
+      <div class="rank ${cls}">
+        <span>${medal} ${s.nama}</span>
+        <b>${s.poin}</b>
+      </div>`;
+  });
+}
+</script>
+
+</body>
+</html>
+
